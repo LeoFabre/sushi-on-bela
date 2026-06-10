@@ -288,10 +288,16 @@ To increase verbosity, prefix the run command with `SUSHI_LOG_LEVEL=info` (or `d
 Press `Ctrl+C` in the SSH session, or from another terminal:
 
 ```sh
-ssh root@bela.local "pkill -x sushi"
+ssh root@bela.local "pkill -f '^\./sushi( |\$)'"
 ```
 
-> Note: use `pkill -x sushi` (exact match), not `pkill -f sushi` — the latter can match and kill the SSH session itself.
+> Note on the kill pattern: `pkill -x sushi` does NOT work — on the EVL kernel the
+> main thread gets renamed to `sushi:<tid>:<rand>`, so an exact name match finds
+> nothing and silently leaves the process holding the audio device. And a bare
+> `pkill -f sushi` is dangerous: it can match (and kill) your own SSH session's
+> command line. The anchored pattern above matches only a process whose command
+> line starts with `./sushi`. Stale twine semaphores can also survive a kill —
+> clean them before restarting: `rm -f /dev/shm/sem.twine_*`.
 
 ---
 
