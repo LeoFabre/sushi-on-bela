@@ -1,0 +1,26 @@
+{
+    "host_config": {
+        "samplerate": 44100
+    },
+    "tracks": [
+        {
+            "name": "synth",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "HelloSine",
+                    "path": "/usr/lib/vst3/HelloSine.vst3",
+                    "name": "hellosine",
+                    "type": "vst3x"
+                }
+            ]
+        }
+    ]
+}

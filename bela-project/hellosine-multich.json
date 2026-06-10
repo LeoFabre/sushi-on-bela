@@ -1,0 +1,200 @@
+{
+    "host_config": {
+        "samplerate": 44100
+    },
+    "tracks": [
+        {
+            "name": "synth",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "HelloSine",
+                    "path": "/usr/lib/vst3/HelloSine.vst3",
+                    "name": "hellosine",
+                    "type": "vst3x"
+                },
+                {
+                    "uid": "sushi.testing.send",
+                    "name": "dup_send_1",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.send",
+                    "name": "dup_send_2",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.send",
+                    "name": "dup_send_3",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.send",
+                    "name": "dup_send_4",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "dup1",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 1,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.return",
+                    "name": "dup_return_1",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "dup_gain_1",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "dup2",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 2,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.return",
+                    "name": "dup_return_2",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "dup_gain_2",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "dup3",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 3,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.return",
+                    "name": "dup_return_3",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "dup_gain_3",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "dup4",
+            "channels": 2,
+            "inputs": [],
+            "outputs": [
+                {
+                    "engine_bus": 4,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.return",
+                    "name": "dup_return_4",
+                    "type": "internal"
+                },
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "dup_gain_4",
+                    "type": "internal"
+                }
+            ]
+        }
+    ],
+    "initial_state": [
+        {
+            "processor": "dup_send_1",
+            "properties": {
+                "destination_name": "dup_return_1"
+            },
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_gain_1",
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_send_2",
+            "properties": {
+                "destination_name": "dup_return_2"
+            },
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_gain_2",
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_send_3",
+            "properties": {
+                "destination_name": "dup_return_3"
+            },
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_gain_3",
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_send_4",
+            "properties": {
+                "destination_name": "dup_return_4"
+            },
+            "parameters": {
+                "gain": 0.8333333
+            }
+        },
+        {
+            "processor": "dup_gain_4",
+            "parameters": {
+                "gain": 0.8333333
+            }
+        }
+    ]
+}

@@ -1,0 +1,122 @@
+{
+    "host_config": {
+        "samplerate": 44100
+    },
+    "tracks": [
+        {
+            "name": "in_bus_0",
+            "channels": 2,
+            "inputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "mon_gain_0",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "in_bus_1",
+            "channels": 2,
+            "inputs": [
+                {
+                    "engine_bus": 1,
+                    "track_bus": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "mon_gain_1",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "in_bus_2",
+            "channels": 2,
+            "inputs": [
+                {
+                    "engine_bus": 2,
+                    "track_bus": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "mon_gain_2",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "in_bus_3",
+            "channels": 2,
+            "inputs": [
+                {
+                    "engine_bus": 3,
+                    "track_bus": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "mon_gain_3",
+                    "type": "internal"
+                }
+            ]
+        },
+        {
+            "name": "in_bus_4",
+            "channels": 2,
+            "inputs": [
+                {
+                    "engine_bus": 4,
+                    "track_bus": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "engine_bus": 0,
+                    "track_bus": 0
+                }
+            ],
+            "plugins": [
+                {
+                    "uid": "sushi.testing.gain",
+                    "name": "mon_gain_4",
+                    "type": "internal"
+                }
+            ]
+        }
+    ]
+}
