@@ -1,5 +1,9 @@
 # sushi-on-bela
 
+<p align="center">
+  <img src="assets/hero.png" alt="Sushi on Bela — a salmon nigiri resting on a Bela GEM board" width="480"/>
+</p>
+
 Run the [Sushi](https://github.com/elk-audio/sushi) audio engine — and your JUCE or DPF VST3/LV2 plugins — on a [Bela](https://bela.io) board (PocketBeagle2 / Bela GEM, Debian Bookworm EVL image).
 
 Sushi is embedded as a library inside a Bela `render()` callback: Bela's PRU-driven audio thread feeds Sushi's reactive frontend chunk by chunk, Sushi runs the plugin graph (optionally across multiple cores via twine/EVL worker threads), and exposes its full gRPC control API on port 51051.
