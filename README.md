@@ -391,6 +391,10 @@ scp -r build-arm64/my-dpf-plugin/*.vst3 root@bela.local:/usr/lib/vst3/
 - Tracks are assigned to workers with the per-track `"thread": <n>` key in the Sushi JSON config (0-based worker index). **Warning: Sushi does not bounds-check this index** — never load a config using `"thread"` placement with `SUSHI_RT_CORES=1` (or fewer cores than the highest index); it reads past the worker array instead of failing cleanly.
 - Stale twine semaphores can survive a crash; clear them before restarting: `rm -f /dev/shm/sem.twine_*`.
 
+### Appliance tuning
+
+At tight buffer budgets (≤ 0.7 ms) the remaining underruns correlate with SD/MMC traffic rather than DSP load: journald fsyncs its on-disk journal, ext4 commits its journal every 5 s, and every file read writes back an atime — each burst of card I/O can stall the memory bus long enough to blow the deadline. `bela-rt-tuning.sh on|off|status` toggles an "appliance mode" that silences this background I/O: journald switched to volatile storage (logs in RAM — **lost at reboot**), rootfs remounted `noatime,commit=60` (up to a 60 s write-loss window on power cut), batched kernel housekeeping sysctls (`vm.stat_interval=120`, `vm.dirty_writeback_centisecs=6000`, `kernel.timer_migration=0`), and Wi-Fi power save off (persisted via a systemd oneshot). Everything is idempotent and reversible with `off`; check the live state of each knob with `status`. Audio-engine logs should additionally go to a tmpfs (`/dev/shm`, `/tmp`) — that part belongs to your start scripts.
+
 ---
 
 ## License
