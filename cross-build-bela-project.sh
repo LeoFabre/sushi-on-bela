@@ -43,6 +43,7 @@ echo "Cross-compiling Bela project (aarch64)..."
 
 docker run --rm \
     -e SUSHI_CHUNK="${SUSHI_CHUNK:-64}" \
+    -e SUSHI_PROFILE="${SUSHI_PROFILE:-0}" \
     -v "${SUSHI_SRC_ABS}:/workspace/sushi:ro" \
     -v "${BUILD_VOLUME}:/workspace/build-sushi:ro" \
     -v "${PROJECT_DIR}:/workspace/project:ro" \
@@ -62,9 +63,17 @@ SUSHI=/workspace/sushi
 # SUSHI_CHUNK must match the SUSHI_AUDIO_BUFFER_SIZE the library was built with
 # (ChunkSampleBuffer is sized by this define on both sides — mismatch corrupts memory).
 SUSHI_CHUNK="${SUSHI_CHUNK:-64}"
+# SUSHI_PROFILE=1 enables the opt-in per-chunk timing instrumentation
+# (-DSUSHI_BELA_CHUNK_PROFILE) — see render.cpp. Off by default: zero cost.
+PROFILE_FLAGS=""
+if [[ "${SUSHI_PROFILE:-0}" == "1" ]]; then
+    PROFILE_FLAGS="-DSUSHI_BELA_CHUNK_PROFILE"
+    echo "Chunk profiling: ENABLED"
+fi
 echo "Compiling render.cpp (chunk=${SUSHI_CHUNK})..."
 $CXX -std=c++20 -O2 \
     -DSUSHI_CUSTOM_AUDIO_CHUNK_SIZE=${SUSHI_CHUNK} \
+    ${PROFILE_FLAGS} \
     -I${SYSROOT}/include \
     -I${SUSHI}/include \
     -I${SUSHI}/twine/include \
