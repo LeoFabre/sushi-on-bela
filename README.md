@@ -393,7 +393,17 @@ scp -r build-arm64/my-dpf-plugin/*.vst3 root@bela.local:/usr/lib/vst3/
 
 ### Appliance tuning
 
-At tight buffer budgets (≤ 0.7 ms) the remaining underruns correlate with SD/MMC traffic rather than DSP load: journald fsyncs its on-disk journal, ext4 commits its journal every 5 s, and every file read writes back an atime — each burst of card I/O can stall the memory bus long enough to blow the deadline. `bela-rt-tuning.sh on|off|status` toggles an "appliance mode" that silences this background I/O: journald switched to volatile storage (logs in RAM — **lost at reboot**), rootfs remounted `noatime,commit=60` (up to a 60 s write-loss window on power cut), batched kernel housekeeping sysctls (`vm.stat_interval=120`, `vm.dirty_writeback_centisecs=6000`, `kernel.timer_migration=0`), and Wi-Fi power save off (persisted via a systemd oneshot). Everything is idempotent and reversible with `off`; check the live state of each knob with `status`. Audio-engine logs should additionally go to a tmpfs (`/dev/shm`, `/tmp`) — that part belongs to your start scripts.
+At tight buffer budgets (≤ 0.7 ms) the remaining underruns correlate with SD/MMC traffic rather than DSP load: journald fsyncs its on-disk journal, ext4 commits its journal every 5 s, and every file read writes back an atime — each burst of card I/O can stall the memory bus long enough to blow the deadline. `bela-rt-tuning.sh on|off|status` toggles an "appliance mode" that silences this background I/O:
+
+| Knob | What it does |
+|---|---|
+| `journald-volatile` | Logs in RAM — **lost at reboot**; removes journald's periodic fsync/rotate traffic to the SD card. |
+| `rootfs-mount-opts` | Remounts root `noatime,commit=60` — batches ext4 journal commits (up to a 60 s write-loss window on power cut). |
+| `sysctls` | `vm.stat_interval=120`, `vm.dirty_writeback_centisecs=6000`, `kernel.timer_migration=0` — less periodic kernel housekeeping on RT cores. |
+| `wifi-powersave-off` | Disables Wi-Fi power-save (PS-poll wakeup cycles cause periodic wlan latency spikes); persisted via a systemd oneshot. |
+| `iwd-quiet-scans` | Sets `DisablePeriodicScan=true` and `DisableRoamingScan=true` in `/etc/iwd/main.conf`; restarts iwd. iwd background and roaming scan loops trigger rtw88 firmware activity that produces USB/bus traffic bursts — measured as underrun storms at 0.67 ms budgets. For stable links at these budgets, also configure your AP on a non-DFS channel (DFS radar-detection rescans can cause multi-second association gaps). |
+
+Everything is idempotent and reversible with `off`; check the live state of each knob with `status`. Audio-engine logs should additionally go to a tmpfs (`/dev/shm`, `/tmp`) — that part belongs to your start scripts.
 
 ---
 
