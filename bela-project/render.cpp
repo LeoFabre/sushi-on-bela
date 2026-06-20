@@ -199,7 +199,12 @@ bool setup(BelaContext* context, void* /*userData*/)
     options.use_osc = false;
     options.use_grpc = true;
     options.log_level = log_env ? log_env : "warning";
-    options.log_file = "/tmp/sushi.log";
+    // /dev/shm is tmpfs (RAM): logging to the SD card here triggered a
+    // self-sustaining underrun loop — at "warning" every underrun emits a
+    // transport warning → ~1/s SD flush → memory-bus stall → more underruns
+    // (diagnosed 2026-06-13). Keep the log on tmpfs so log writes never hit
+    // the SD, regardless of level.
+    options.log_file = "/dev/shm/sushi.log";
     options.rt_cpu_cores = rt_cores;
     options.enable_timings = true;
     options.reactive_audio_inputs = g_channels;
